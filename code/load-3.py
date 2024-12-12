@@ -17,6 +17,7 @@ def create_bucket(bucket_name, endpoint_url, access_key, secret_key):
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print("ERROR", e)
+        print("Response content:", response.content)
         return False
     return True
 
@@ -29,7 +30,7 @@ def upload_file(file_name, bucket_name, object_name=None):
     :return: True if file was uploaded, else False
     """
     # S3-compatible service configuration
-    endpoint_url = 'https://play.min.io:9000'
+    endpoint_url = 'https://play.min.io:9000'  # Ensure the endpoint URL is correct
     access_key = 'Q3AM3UQ867SPQQA43P2F'
     secret_key = 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
 
@@ -55,6 +56,7 @@ def upload_file(file_name, bucket_name, object_name=None):
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print("ERROR", e)
+        print("Response content:", response.content)
         return False
     return True
 
