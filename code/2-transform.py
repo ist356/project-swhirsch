@@ -3,8 +3,8 @@ import os
 from playwright.sync_api import sync_playwright
 
 # Ensure Cache folder exists
-if not os.path.exists("Cache"):
-    os.makedirs("Cache")
+if not os.path.exists("code"):
+    os.makedirs("code")
 
 def extract_data():
     with sync_playwright() as playwright:
@@ -26,7 +26,7 @@ def extract_data():
         df = pd.DataFrame(data)
         
         # Save to CSV in Cache folder
-        csv_path = "Cache/passing_data.csv"
+        csv_path = "code/passing_data.csv"
         df.to_csv(csv_path, index=False)
         print(f"CSV file saved to {csv_path}")
         
@@ -36,7 +36,7 @@ def extract_data():
 extract_data()
 
 # Read the CSV file
-csv_path = "Cache/passing_data.csv"
+csv_path = "code/passing_data.csv"
 df = pd.read_csv(csv_path, header=None)
 
 # Delete the row with the name "League Average"
@@ -75,7 +75,11 @@ df = df[df["Position"] == "QB"]
 # Remove rows where Name is "Joshua Dobbs" and Team is "ARI" or "MIN"
 df = df[~((df["Name"] == "Joshua Dobbs") & (df["Team"].isin(["ARI", "MIN"])))]
 
+# Convert columns to integers except for Name, Team, and Position
+columns_to_convert = df.columns.difference(["Name", "Team", "Position", "Record"])
+df[columns_to_convert] = df[columns_to_convert].apply(pd.to_numeric, errors='coerce').fillna(0).astype(int)
+
 # Save the cleaned data to a new CSV file
-cleaned_csv_path = "Cache/cleaned_passing_data.csv"
+cleaned_csv_path = "code/2023cleaned_passing_data.csv"
 df.to_csv(cleaned_csv_path, index=False)
 print(f"Cleaned CSV file saved to {cleaned_csv_path}")

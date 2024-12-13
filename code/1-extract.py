@@ -3,8 +3,8 @@ import os
 from playwright.sync_api import sync_playwright
 
 # Ensure Cache folder exists
-if not os.path.exists("Cache"):
-    os.makedirs("Cache")
+if not os.path.exists("code"):
+    os.makedirs("code")
 
 def extract_data():
     with sync_playwright() as playwright:
@@ -26,7 +26,7 @@ def extract_data():
         df = pd.DataFrame(data)
         
         # Save to CSV in Cache folder
-        csv_path = "Cache/passing_data.csv"
+        csv_path = "code/passing_data.csv"
         df.to_csv(csv_path, index=False)
         print(f"CSV file saved to {csv_path}")
         
@@ -36,5 +36,5 @@ def extract_data():
 extract_data()
 
 # Read and display the CSV file
-df = pd.read_csv("Cache/passing_data.csv")
+df = pd.read_csv("code/passing_data.csv")
 print(df.head())
