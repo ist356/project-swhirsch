@@ -30,7 +30,7 @@ def upload_file(file_name, bucket_name, object_name=None):
     :return: True if file was uploaded, else False
     """
     # S3-compatible service configuration
-    endpoint_url = 'https://play.min.io:9000'  # Ensure the endpoint URL is correct
+    endpoint_url = 'https://play.min.io:9000' 
     access_key = 'Q3AM3UQ867SPQQA43P2F'
     secret_key = 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
 
