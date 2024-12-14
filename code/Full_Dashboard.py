@@ -31,7 +31,7 @@ df = pd.read_csv(csv_path)
 
 plt.figure(figsize=(12, 8))
 histplot = sns.histplot(df['Age'], bins=10, kde=True, color='skyblue', edgecolor='black')
-plt.title("Distribution of Ages of Quarterbacks in the 2023 NFL Season", fontsize=16)
+plt.title("Analysis One: Distribution of Ages of Quarterbacks", fontsize=16)
 plt.xlabel("Age", fontsize=14)
 plt.ylabel("Frequency", fontsize=14)
 plt.xticks(fontsize=12)
@@ -52,6 +52,8 @@ for p in histplot.patches:
                       ha='center', fontsize=12)
     
 st.pyplot(plt)
+
+st.caption('Note: Ages are of Beginning of the 2023 NFL Season, September 2023')
 
 st.caption('The histogram of quarterback ages at the beginning of the 2023 NFL Season shows most quarterbacks are between 24-30 years old, 70.8% to be specific, reflecting the combination of rising talent and players in their primes dominating the league. The 8 quarterbacks still playing at age 35 or older suggest the challenge of longevity at the quarterback position. Few quarterbacks play games under the age of 24, suggesting a preference of teams for more experience quarterbacks. The average age of quarterbacks who played in 2023 was 28.08, a balance between the influx fo youth and the older generation of talent in the league.')
 
@@ -119,25 +121,22 @@ st.caption('The 2023 NFL season held historically impressive passing performance
 st.header('Analysis Five: Top 10 Quarterbacks with the Most Interceptions')
 top_10_interceptions = df.sort_values(by='Interceptions', ascending=False).head(10)
 plt.figure(figsize=(12, 8))
-sns.barplot(x='Interceptions', y='Name', data=top_10_interceptions, palette='coolwarm')
+barplot = sns.barplot(x='Interceptions', y='Name', data=top_10_interceptions, palette='coolwarm')
+
+# A5 Labels
+for index, value in enumerate(top_10_interceptions['Interceptions']):
+    barplot.text(value, index, str(value), color='black', ha="left", va="center", fontsize=12)
+
 plt.xlabel('Interceptions', fontsize=14)
 plt.ylabel('Name', fontsize=14)
-plt.title('Top 10 Quarterbacls with the Most Interceptions in the 2023 Season', fontsize=16)
+plt.title('Top 10 Quarterbacks with the Most Interceptions in the 2023 Season', fontsize=16)
 plt.grid(True, linestyle='--', alpha=0.7)
 st.pyplot(plt)
 
-data = pd.read_csv('./Cache/cleaned_passing_data.csv')
-
-Q1 = data['Passes Attempted'].quantile(0.25)
-Q3 = data['Passes Attempted'].quantile(0.75)
-IQR = Q3 - Q1
-lower_bound = Q1 - 2.5 * IQR
-upper_bound = Q3 + 2.5 * IQR
-data = data[(data['Passes Attempted'] >= lower_bound) & (data['Passes Attempted'] <= upper_bound)]
-
-st.title('NFL Passing Data Dashboard')
+st.caption('The 2023 NFL season had an interesting batch of quarterbacks in the top 10 of interceptions, led by Sam Howell (21), Sam Howell (21), Josh Allen (18), Jalen Hurts (15),  and a three-way tie between Trevor Lawrence, Patrick Mahomes, and Tua Tagovailoa (14). Fundamentally, quarterbacks who throw more often tend to take more risks, increasing their chances of interceptions. Quarterbacks in this top 10 group attempted 530.1 passes this season, well above the average 445.8 for quarterbacks who appeared in 10 or more games. Their aggressive tendencies were reflected in their average passer rating of 88.5, which is lower than elite standards, but higher than the league average of 80.4. Interestingly, the data did not support my hypothesis that the more aggressive quarterbacks throw more interceptions. There is a weak positive correlative correlation of .02 between interceptions and Yards per Passing Attempt and a weak positive correlation of .21 between Interceptions and Completion Percentage. There are two categories of Quarterbacks in this top 10. The stars with job security (Mahomes, Allen) and those risk-takers who may struggle to find another starting position (Sam Howell, Desmond Ridder). Both Sam Howell and Desmond Ridder threw for as many touchdowns, as they did interceptions in 2023. ')
 
 # Analysis6 p1: Linear Regression of Passes Attempted vs Completion Percentage
+data = pd.read_csv('./Cache/cleaned_passing_data.csv')
 st.header('Linear Regression of Passes Attempted vs Completion Percentage')
 plt.figure(figsize=(12, 8))
 sns.regplot(x='Completion Percentage', y='Passes Attempted', data=data, scatter_kws={'s':50}, line_kws={'color':'red'})
@@ -147,8 +146,8 @@ plt.ylabel('Passes Attempted', fontsize=14)
 plt.grid(True, linestyle='--', alpha=0.7)
 
 # a6p1 labels
-players_to_label = ["Patrick Mahomes", "Dak Prescott", "Jared Goff"]
-label_offsets = [(5, -50), (5, -150), (5, -250)]  # Different offsets for each player to spread out the arrows
+players_to_label = ["Patrick Mahomes", "Dak Prescott", "Jared Goff", "Will Levis"]
+label_offsets = [(5, -50), (5, -150), (5, -250), (15, -100)]  # Different offsets for each player to spread out the arrows
 for i, (index, row) in enumerate(data[data['Name'].isin(players_to_label)].iterrows()):
     offset = label_offsets[i % len(label_offsets)]
     plt.annotate(f"{row['Name']} ({row['Passes Attempted']}, {row['Completion Percentage']:.2f}%)",
@@ -157,7 +156,10 @@ for i, (index, row) in enumerate(data[data['Name'].isin(players_to_label)].iterr
                  arrowprops=dict(facecolor='black', arrowstyle="->"),
                  fontsize=12, color='black')
 
+
 st.pyplot(plt)
+st.caption('The linear regression analysis shows a weak positive correlation of 0.23 between passes attempted and completion percentage. This suggests that there is some connection between these variables, but the number of passes attempted does not strongly predict a quarterbacks accuracy. The regression equation, with an intercept of 54.55 and a coefficient of 2.91, indicates that the completion percentage increases by 2.91 for each additional pass attempted. These statistics suggest other factors at play contribute to a player’s passing percentage. These may include the player’s play style, the team’s offensive scheme, or the talent surrounding the quarterback. Some players who stood out positively are Jared Goff (67% completion on 605 passes), Dak Prescott (69% on 590 attempts), and Patrick Mahomes (67% on 597). These performances all helped their teams reach the 2023 playoffs. On the other end, Will Levis struggled, with a league-low 58% completion percentage of all quarterbacks with over 200 passing attempts. Levis’s Tennesse Titans finished near the bottom of the league, and Levis continues to battle for his job. The league average was 60.75% for completion percentage, but this figure was skewed downward by quarterbacks who struggled in under 100 passing attempts. The data hints at the difficulty of having a high number of passing attempts while maintaining a high completion percentage. Those quarterbacks who do help their teams reach playoff success.')
+
 
 # Analysis6 p2
 st.header('Linear Regression of Passes Attempted vs Touchdown Percentage')
