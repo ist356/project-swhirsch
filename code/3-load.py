@@ -2,7 +2,6 @@ import pandas as pd
 import os
 from playwright.sync_api import sync_playwright
 
-# Ensure Cache folder exists
 if not os.path.exists("Cache"):
     os.makedirs("Cache")
 
@@ -22,7 +21,6 @@ def extract_data():
             cells = row.query_selector_all("td")
             data.append([cell.inner_text() for cell in cells])
         
-        # Convert to DataFrame
         df = pd.DataFrame(data)
         
         # Save to CSV in Cache folder
@@ -32,17 +30,13 @@ def extract_data():
         
         browser.close()
 
-# Run the extraction function
 extract_data()
 
-# Read the CSV file
 csv_path = "Cache/passing_data.csv"
 df = pd.read_csv(csv_path, header=None)
 
-# Delete the row with the name "League Average"
 df = df[df[0] != "League Average"]
 
-# Rename columns
 df.rename(columns={
     0: "Name",
     1: "Age",
