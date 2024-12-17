@@ -80,6 +80,6 @@ columns_to_convert = df.columns.difference(["Name", "Team", "Position", "Record"
 df[columns_to_convert] = df[columns_to_convert].apply(pd.to_numeric, errors='coerce').fillna(0).astype(int)
 
 # Save the cleaned data to a new CSV file
-cleaned_csv_path = "code/2023cleaned_passing_data.csv"
+cleaned_csv_path = "code/cleaned_passing_data.csv"
 df.to_csv(cleaned_csv_path, index=False)
 print(f"Cleaned CSV file saved to {cleaned_csv_path}")
