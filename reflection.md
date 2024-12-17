@@ -23,3 +23,4 @@ Examples:
 
 `--- Reflection Below This Line ---`
 
+This project was absolutely a challange, having to construct my own data pipeline and clean the data without any direction. Though challanging, I appreciate being 'thrown into the deep end' and having to execute a large project by myself. This project taught me about the deeper nuances of datascraping, data cleaning with pandas, visualization with seaborn, and the overall abilities of the Python language. One thing I appreciate about the Python coding language are the barriers, or lack there of. With so many modules, packages, and APIs, there is a solution to every problem one may encounter in Python. I'm excited to create a data analysis I am proud of, on a topic I am passionate in. 
